@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Unitum — The all-in-one collaborative project management platform for agile teams.">
+    <title>Unitum — Transform Team Collaboration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* ── RESET & TOKENS ─────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary:       #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark:  #6d28d9;
+            --cyan:          #06b6d4;
+            --orange:        #f97316;
+            --green:         #10b981;
+            --dark:          #0f172a;
+            --dark-2:        #1e293b;
+            --gray-50:       #f8fafc;
+            --gray-100:      #f1f5f9;
+            --gray-200:      #e2e8f0;
+            --gray-400:      #94a3b8;
+            --gray-500:      #64748b;
+            --gray-700:      #334155;
+            --white:         #ffffff;
+            --gradient:      linear-gradient(135deg,#7c3aed 0%,#2563eb 100%);
+            --gradient-warm: linear-gradient(135deg,#f97316 0%,#f59e0b 100%);
+            --gradient-cool: linear-gradient(135deg,#06b6d4 0%,#7c3aed 100%);
+            --shadow:        0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+            --shadow-lg:     0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
+            --shadow-xl:     0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);
+            --shadow-2xl:    0 25px 50px -12px rgba(0,0,0,.25);
+            --r:   12px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark);
+            background: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ── TYPOGRAPHY ─────────────────────────────────── */
+        h1,h2,h3,h4 { line-height: 1.2; font-weight: 700; }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(124,58,237,.1);
+            color: var(--primary);
+            border: 1px solid rgba(124,58,237,.2);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .4px;
+            margin-bottom: 16px;
+        }
+
+        .section-badge--light {
+            background: rgba(255,255,255,.1);
+            color: rgba(255,255,255,.85);
+            border-color: rgba(255,255,255,.2);
+        }
+
+        .section-header { text-align: center; margin-bottom: 64px; }
+        .section-header h2 { font-size: clamp(28px,4vw,44px); margin-bottom: 16px; }
+        .section-header p { font-size: 18px; color: var(--gray-500); max-width: 580px; margin: 0 auto; }
+        .section-header--dark p { color: rgba(255,255,255,.5); }
+        .section-header--dark h2 { color: var(--white); }
+
+        /* ── LAYOUT ─────────────────────────────────────── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 100px 0; }
+
+        /* ── NAVBAR ─────────────────────────────────────── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 18px 0;
+            transition: all .3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15,23,42,.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            padding: 12px 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,.3);
+        }
+
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--white);
+        }
+
+        .logo-mark {
+            width: 38px; height: 38px;
+            background: var(--gradient);
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 17px; color: white;
+            box-shadow: 0 4px 12px rgba(124,58,237,.5);
+        }
+
+        .logo-text { font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
+
+        .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,.7);
+            text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--white); }
+
+        .nav-cta { display: flex; align-items: center; gap: 10px; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 22px; border-radius: 10px;
+            font-size: 14px; font-weight: 600;
+            text-decoration: none; transition: all .2s;
+            cursor: pointer; border: none; outline: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 14px rgba(124,58,237,.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124,58,237,.55);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,.25);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.5); }
+
+        .btn-lg { padding: 15px 32px; font-size: 16px; border-radius: 12px; }
+        .btn-xl { padding: 18px 40px; font-size: 17px; border-radius: 14px; }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 4px;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: white; border-radius: 2px; transition: all .3s;
+        }
+
+        /* ── MOBILE NAV ─────────────────────────────────── */
+        .mobile-nav {
+            position: fixed; inset: 0;
+            background: var(--dark); z-index: 999;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 36px;
+            transform: translateX(100%); transition: transform .3s ease;
+        }
+        .mobile-nav.open { transform: translateX(0); }
+        .mobile-nav a {
+            font-size: 26px; font-weight: 700; color: rgba(255,255,255,.8);
+            text-decoration: none; transition: color .2s;
+        }
+        .mobile-nav a:hover { color: white; }
+        .mobile-close {
+            position: absolute; top: 24px; right: 24px;
+            cursor: pointer; color: white; opacity: .7;
+        }
+        .mobile-close:hover { opacity: 1; }
+
+        /* ── HERO ───────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            background: var(--dark);
+            display: flex; align-items: center;
+            position: relative; overflow: hidden;
+            padding: 120px 0 80px;
+        }
+
+        .hero-bg {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 80% 70% at 20% 10%, rgba(124,58,237,.35) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 60% at 80% 80%, rgba(37,99,235,.25) 0%, transparent 60%),
+                radial-gradient(ellipse 45% 45% at 65% 15%, rgba(6,182,212,.18) 0%, transparent 55%);
+        }
+
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .blob {
+            position: absolute; border-radius: 50%;
+            filter: blur(90px); opacity: .35;
+        }
+        .blob-1 { width: 450px; height: 450px; background: #7c3aed; top: -80px; right: 8%; animation: float 9s ease-in-out infinite; }
+        .blob-2 { width: 320px; height: 320px; background: #2563eb; bottom: -40px; left: 4%; animation: float 11s ease-in-out infinite reverse; }
+        .blob-3 { width: 260px; height: 260px; background: #06b6d4; top: 40%; right: 28%; animation: float 7s ease-in-out infinite; animation-delay: -4s; }
+
+        @keyframes float {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%      { transform: translate(25px,-35px) scale(1.04); }
+            66%      { transform: translate(-20px,20px) scale(0.96); }
+        }
+
+        .hero-content {
+            position: relative; z-index: 1;
+            text-align: center; max-width: 920px; margin: 0 auto;
+        }
+
+        .hero-pill {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.13);
+            color: rgba(255,255,255,.88);
+            padding: 8px 20px; border-radius: 100px;
+            font-size: 13px; font-weight: 500;
+            margin-bottom: 36px;
+            backdrop-filter: blur(12px);
+        }
+        .live-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--green);
+            animation: pulse-dot 2.4s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: .45; transform: scale(.75); }
+        }
+
+        .hero h1 {
+            font-size: clamp(38px,6.5vw,76px);
+            color: white; letter-spacing: -2.5px;
+            font-weight: 900; margin-bottom: 28px;
+            line-height: 1.05;
+        }
+        .hero h1 .hl {
+            background: linear-gradient(135deg,#a78bfa,#60a5fa,#67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(16px,2vw,20px);
+            color: rgba(255,255,255,.6);
+            max-width: 580px; margin: 0 auto 44px;
+            line-height: 1.75;
+        }
+
+        .hero-actions {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; flex-wrap: wrap; margin-bottom: 80px;
+        }
+
+        .hero-stats {
+            display: flex; justify-content: center;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: var(--r-xl);
+            backdrop-filter: blur(20px);
+            overflow: hidden; max-width: 580px; margin: 0 auto;
+        }
+        .stat-item {
+            flex: 1; padding: 24px 20px; text-align: center;
+            border-right: 1px solid rgba(255,255,255,.07);
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-number { font-size: 30px; font-weight: 900; color: white; line-height: 1; margin-bottom: 5px; }
+        .stat-label { font-size: 11px; color: rgba(255,255,255,.45); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
+
+        /* ── PROBLEM ─────────────────────────────────────── */
+        .problems { background: var(--gray-50); }
+
+        .problem-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+
+        .problem-card {
+            background: white; border-radius: var(--r-lg);
+            padding: 32px; border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow);
+            transition: transform .35s ease, box-shadow .35s ease, opacity .6s ease;
+            opacity: 0; transform: translateY(32px);
+        }
+        .problem-card.visible { opacity: 1; transform: translateY(0); }
+        .problem-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+
+        .problem-icon {
+            width: 52px; height: 52px;
+            background: linear-gradient(135deg,rgba(239,68,68,.1),rgba(249,115,22,.08));
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; color: #ef4444;
+        }
+        .problem-card h3 { font-size: 17px; margin-bottom: 10px; }
+        .problem-card p { font-size: 13.5px; color: var(--gray-500); line-height: 1.75; }
+
+        /* ── FEATURES ────────────────────────────────────── */
+        .features { background: white; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+
+        .feature-card {
+            background: white; border-radius: var(--r-lg);
+            padding: 36px; border: 1px solid var(--gray-200);
+            position: relative; overflow: hidden;
+            transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease, opacity .6s ease;
+            opacity: 0; transform: translateY(32px);
+        }
+        .feature-card.visible { opacity: 1; transform: translateY(0); }
+        .feature-card::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gradient); transform: scaleX(0);
+            transition: transform .35s ease; transform-origin: left;
+        }
+        .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-2xl); border-color: rgba(124,58,237,.25); }
+        .feature-card:hover::before { transform: scaleX(1); }
+
+        .feature-icon {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg,rgba(124,58,237,.1),rgba(37,99,235,.07));
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 22px; color: var(--primary);
+        }
+        .feature-card h3 { font-size: 18px; margin-bottom: 10px; }
+        .feature-card p { font-size: 13.5px; color: var(--gray-500); line-height: 1.75; }
+
+        /* ── HOW IT WORKS ────────────────────────────────── */
+        .workflow { background: var(--dark); }
+
+        .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+
+        .step-card {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: var(--r-lg); padding: 32px;
+            transition: background .3s, border-color .3s, transform .35s, opacity .6s;
+            opacity: 0; transform: translateY(32px);
+        }
+        .step-card.visible { opacity: 1; transform: translateY(0); }
+        .step-card:hover { background: rgba(255,255,255,.07); border-color: rgba(124,58,237,.4); transform: translateY(-5px); }
+
+        .step-num {
+            font-size: 12px; font-weight: 700;
+            color: var(--primary-light); text-transform: uppercase;
+            letter-spacing: 1.2px; margin-bottom: 14px;
+        }
+        .step-icon {
+            width: 48px; height: 48px; background: var(--gradient);
+            border-radius: 13px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 18px; color: white;
+            box-shadow: 0 4px 12px rgba(124,58,237,.35);
+        }
+        .step-card h3 { font-size: 18px; color: white; margin-bottom: 10px; }
+        .step-card p  { font-size: 13.5px; color: rgba(255,255,255,.5); line-height: 1.75; }
+
+        /* ── TECH STACK ──────────────────────────────────── */
+        .tech { background: white; }
+
+        .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+        .tech-col {
+            background: var(--gray-50); border-radius: var(--r-xl);
+            padding: 40px; border: 1px solid var(--gray-200);
+        }
+        .tech-col-head {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+        }
+        .tech-col-icon {
+            width: 46px; height: 46px; background: var(--gradient);
+            border-radius: 13px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; box-shadow: 0 4px 12px rgba(124,58,237,.35);
+        }
+        .tech-col h3 { font-size: 20px; }
+
+        .tech-items { display: flex; flex-direction: column; gap: 12px; }
+
+        .tech-item {
+            display: flex; align-items: center; gap: 14px;
+            background: white; padding: 14px 18px;
+            border-radius: var(--r); border: 1px solid var(--gray-200);
+            transition: border-color .2s, transform .2s;
+        }
+        .tech-item:hover { border-color: var(--primary-light); transform: translateX(4px); }
+
+        .tdot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .ti-text { flex: 1; }
+        .ti-name { font-size: 14px; font-weight: 600; }
+        .ti-desc { font-size: 12px; color: var(--gray-500); }
+        .ti-badge {
+            font-size: 11px; font-weight: 600;
+            padding: 3px 10px; border-radius: 100px;
+            background: rgba(124,58,237,.1); color: var(--primary);
+        }
+
+        /* ── ARCHITECTURE ────────────────────────────────── */
+        .architecture { background: var(--gray-50); }
+
+        .arch-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+        .arch-card {
+            background: white; border-radius: var(--r-lg);
+            padding: 32px; border: 1px solid var(--gray-200);
+            transition: border-color .3s, box-shadow .3s, transform .35s, opacity .6s;
+            opacity: 0; transform: translateY(24px);
+        }
+        .arch-card.visible { opacity: 1; transform: translateY(0); }
+        .arch-card:hover { border-color: rgba(124,58,237,.3); box-shadow: var(--shadow-xl); transform: translateY(-5px); }
+
+        .arch-icon {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 18px;
+        }
+        .arch-card h3 { font-size: 17px; margin-bottom: 8px; }
+        .arch-card p  { font-size: 13px; color: var(--gray-500); line-height: 1.75; }
+
+        .arch-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+        .arch-tag {
+            font-size: 11px; font-weight: 500;
+            padding: 3px 10px; border-radius: 100px;
+            background: var(--gray-100); color: var(--gray-700);
+        }
+
+        /* ── BENEFITS ────────────────────────────────────── */
+        .benefits { background: var(--dark-2); }
+
+        .benefits-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+        .benefit-card {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: var(--r-lg); padding: 32px;
+            transition: background .3s, border-color .3s, transform .35s, opacity .6s;
+            opacity: 0; transform: translateY(24px);
+        }
+        .benefit-card.visible { opacity: 1; transform: translateY(0); }
+        .benefit-card:hover { background: rgba(255,255,255,.07); border-color: rgba(124,58,237,.4); transform: translateY(-5px); }
+
+        .benefit-metric {
+            font-size: 40px; font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; line-height: 1; margin-bottom: 6px;
+        }
+        .benefit-card h3 { font-size: 17px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .benefit-card p  { font-size: 13px; color: rgba(255,255,255,.48); line-height: 1.75; }
+
+        /* ── USE CASES ───────────────────────────────────── */
+        .use-cases { background: white; }
+
+        .uc-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 28px; }
+
+        .uc-card {
+            display: flex; gap: 20px;
+            background: var(--gray-50); border-radius: var(--r-lg);
+            padding: 32px; border: 1px solid var(--gray-200);
+            transition: background .3s, border-color .3s, box-shadow .3s, transform .35s, opacity .6s;
+            opacity: 0; transform: translateY(24px);
+        }
+        .uc-card.visible { opacity: 1; transform: translateY(0); }
+        .uc-card:hover { background: white; border-color: rgba(124,58,237,.25); box-shadow: var(--shadow-xl); transform: translateY(-5px); }
+
+        .uc-icon {
+            width: 58px; height: 58px; border-radius: 17px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; color: white;
+        }
+        .uc-content h3 { font-size: 18px; margin-bottom: 8px; }
+        .uc-content p  { font-size: 13.5px; color: var(--gray-500); line-height: 1.65; margin-bottom: 14px; }
+
+        .uc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .uc-tag {
+            font-size: 11px; font-weight: 600;
+            padding: 4px 11px; border-radius: 100px;
+        }
+
+        /* ── CTA SECTION ─────────────────────────────────── */
+        .cta { background: var(--dark); position: relative; overflow: hidden; }
+
+        .cta-glow {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 65% 80% at 25% 50%, rgba(124,58,237,.28) 0%, transparent 60%),
+                radial-gradient(ellipse 55% 65% at 75% 50%, rgba(37,99,235,.22) 0%, transparent 60%);
+        }
+
+        .cta-content { position: relative; z-index: 1; text-align: center; }
+        .cta-content h2 { font-size: clamp(30px,4.5vw,56px); color: white; letter-spacing: -1.5px; margin-bottom: 18px; }
+        .cta-content p  { font-size: 18px; color: rgba(255,255,255,.55); max-width: 480px; margin: 0 auto 52px; }
+
+        .cta-actions { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+        .cta-note { font-size: 13px; color: rgba(255,255,255,.28); }
+
+        /* ── FOOTER ──────────────────────────────────────── */
+        .footer {
+            background: #050d1c; padding: 80px 0 40px;
+            border-top: 1px solid rgba(255,255,255,.05);
+        }
+
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+
+        .footer-brand p { font-size: 13.5px; color: rgba(255,255,255,.38); line-height: 1.75; margin: 16px 0 24px; max-width: 270px; }
+
+        .footer-socials { display: flex; gap: 10px; }
+        .soc-link {
+            width: 38px; height: 38px;
+            background: rgba(255,255,255,.06); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,.45); text-decoration: none;
+            transition: background .2s, color .2s, transform .2s;
+        }
+        .soc-link:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+
+        .footer-col h4 {
+            font-size: 12px; font-weight: 700;
+            color: rgba(255,255,255,.4);
+            text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 20px;
+        }
+        .footer-links { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+        .footer-links a { font-size: 13.5px; color: rgba(255,255,255,.38); text-decoration: none; transition: color .2s; }
+        .footer-links a:hover { color: white; }
+
+        .footer-bottom {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 32px; border-top: 1px solid rgba(255,255,255,.05);
+        }
+        .footer-bottom p { font-size: 12.5px; color: rgba(255,255,255,.25); }
+
+        /* ── TEAM ────────────────────────────────────────── */
+        .team { background: var(--gray-50); }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 32px;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: var(--r-lg);
+            padding: 40px 28px;
+            border: 1px solid var(--gray-200);
+            text-align: center;
+            transition: transform .35s ease, box-shadow .35s ease, opacity .6s ease;
+            opacity: 0; transform: translateY(32px);
+        }
+        .team-card.visible { opacity: 1; transform: translateY(0); }
+        .team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-2xl); }
+
+        .team-photo-wrap {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 22px;
+            padding: 3px;
+            background: var(--gradient);
+            box-shadow: 0 8px 28px rgba(124,58,237,.28);
+        }
+
+        .team-photo {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .team-card h3 { font-size: 18px; margin-bottom: 6px; }
+        .team-card .team-role { font-size: 13.5px; color: var(--primary); font-weight: 600; }
+
+        /* ── SCROLL ANIMATION BASE ───────────────────────── */
+        .fade-up { opacity: 0; transform: translateY(32px); transition: opacity .7s ease, transform .7s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* Stagger delays */
+        .problem-card:nth-child(1)  { transition-delay:.00s }
+        .problem-card:nth-child(2)  { transition-delay:.08s }
+        .problem-card:nth-child(3)  { transition-delay:.16s }
+        .problem-card:nth-child(4)  { transition-delay:.24s }
+
+        .feature-card:nth-child(1)  { transition-delay:.00s }
+        .feature-card:nth-child(2)  { transition-delay:.07s }
+        .feature-card:nth-child(3)  { transition-delay:.14s }
+        .feature-card:nth-child(4)  { transition-delay:.07s }
+        .feature-card:nth-child(5)  { transition-delay:.14s }
+        .feature-card:nth-child(6)  { transition-delay:.21s }
+
+        .step-card:nth-child(1)     { transition-delay:.00s }
+        .step-card:nth-child(2)     { transition-delay:.08s }
+        .step-card:nth-child(3)     { transition-delay:.16s }
+        .step-card:nth-child(4)     { transition-delay:.04s }
+        .step-card:nth-child(5)     { transition-delay:.12s }
+        .step-card:nth-child(6)     { transition-delay:.20s }
+
+        .arch-card:nth-child(1)     { transition-delay:.00s }
+        .arch-card:nth-child(2)     { transition-delay:.07s }
+        .arch-card:nth-child(3)     { transition-delay:.14s }
+        .arch-card:nth-child(4)     { transition-delay:.07s }
+        .arch-card:nth-child(5)     { transition-delay:.14s }
+        .arch-card:nth-child(6)     { transition-delay:.21s }
+
+        .benefit-card:nth-child(1)  { transition-delay:.00s }
+        .benefit-card:nth-child(2)  { transition-delay:.07s }
+        .benefit-card:nth-child(3)  { transition-delay:.14s }
+        .benefit-card:nth-child(4)  { transition-delay:.07s }
+        .benefit-card:nth-child(5)  { transition-delay:.14s }
+        .benefit-card:nth-child(6)  { transition-delay:.21s }
+
+        .uc-card:nth-child(1)       { transition-delay:.00s }
+        .uc-card:nth-child(2)       { transition-delay:.12s }
+        .uc-card:nth-child(3)       { transition-delay:.06s }
+        .uc-card:nth-child(4)       { transition-delay:.18s }
+
+        .team-card:nth-child(1)     { transition-delay:.00s }
+        .team-card:nth-child(2)     { transition-delay:.08s }
+        .team-card:nth-child(3)     { transition-delay:.16s }
+        .team-card:nth-child(4)     { transition-delay:.08s }
+        .team-card:nth-child(5)     { transition-delay:.16s }
+        .team-card:nth-child(6)     { transition-delay:.24s }
+
+        /* ── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 1100px) {
+            .problem-grid  { grid-template-columns: repeat(2,1fr); }
+            .steps-grid    { grid-template-columns: repeat(2,1fr); }
+            .arch-grid     { grid-template-columns: repeat(2,1fr); }
+            .benefits-grid { grid-template-columns: repeat(2,1fr); }
+            .team-grid     { grid-template-columns: repeat(3,1fr); }
+            .footer-grid   { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 72px 0; }
+            .section-header { margin-bottom: 44px; }
+            .nav-links, .nav-cta { display: none; }
+            .hamburger { display: flex; }
+            .features-grid, .tech-grid, .uc-grid,
+            .steps-grid, .arch-grid, .benefits-grid,
+            .problem-grid, .team-grid { grid-template-columns: 1fr; }
+            .hero h1 { letter-spacing: -1.5px; }
+            .hero-stats { flex-direction: column; max-width: 260px; }
+            .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
+            .stat-item:last-child { border-bottom: none; }
+            .hero-actions, .cta-actions { flex-direction: column; align-items: center; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── PRINT ───────────────────────────────────────── */
+        @media print {
+            .navbar, .hamburger, .mobile-nav { display: none !important; }
+            section { padding: 40px 0; page-break-inside: avoid; }
+            .hero { min-height: auto; background: white !important; }
+            .hero h1, .hero p, .stat-number, .stat-label { color: black !important; -webkit-text-fill-color: black !important; }
+            .blob, .hero-bg, .hero-grid, .cta-glow { display: none; }
+            .workflow, .benefits, .cta, .footer { background: white !important; }
+            .step-card, .benefit-card { background: var(--gray-50) !important; border-color: var(--gray-200) !important; }
+            .step-card *, .benefit-card * { color: black !important; -webkit-text-fill-color: black !important; }
+            * { opacity: 1 !important; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ░░ MOBILE NAV ░░ -->
+<div class="mobile-nav" id="mobileNav">
+    <div class="mobile-close" onclick="closeMobileNav()" aria-label="Close menu">
+        <i data-lucide="x" style="width:28px;height:28px;"></i>
+    </div>
+    <a href="#features"      onclick="closeMobileNav()">Features</a>
+    <a href="#workflow"      onclick="closeMobileNav()">How It Works</a>
+    <a href="#tech"          onclick="closeMobileNav()">Technology</a>
+    <a href="#architecture"  onclick="closeMobileNav()">Architecture</a>
+    <a href="#benefits"      onclick="closeMobileNav()">Benefits</a>
+    <a href="#cta"           onclick="closeMobileNav()">Get Started</a>
+</div>
+
+<!-- ░░ NAVBAR ░░ -->
+<nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo" aria-label="Unitum home">
+                <div class="logo-mark" aria-hidden="true">U</div>
+                <span class="logo-text">Unitum</span>
+            </a>
+            <ul class="nav-links" role="list">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#workflow">How It Works</a></li>
+                <li><a href="#tech">Technology</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="#cta" class="btn btn-ghost">Learn More</a>
+                <a href="#cta" class="btn btn-primary">Get Started</a>
+            </div>
+            <div class="hamburger" onclick="openMobileNav()" aria-label="Open menu" role="button" tabindex="0">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ░░ HERO ░░ -->
+<section class="hero" id="hero" aria-labelledby="hero-heading">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+    <div class="blob blob-3" aria-hidden="true"></div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-pill" role="status">
+                <span class="live-dot" aria-hidden="true"></span>
+                Now Live — Unitum Platform v1.0
+            </div>
+            <h1 id="hero-heading">
+                Transform <span class="hl">Team Collaboration</span><br>with Unitum
+            </h1>
+            <p>The all-in-one platform for agile teams to manage projects, assign tasks, and collaborate in real-time — all from one powerful workspace.</p>
+            <div class="hero-actions">
+                <a href="#cta" class="btn btn-primary btn-lg">
+                    <i data-lucide="rocket" style="width:18px;height:18px;" aria-hidden="true"></i>
+                    Get Started Free
+                </a>
+                <a href="#features" class="btn btn-ghost btn-lg">
+                    <i data-lucide="play-circle" style="width:18px;height:18px;" aria-hidden="true"></i>
+                    Explore Features
+                </a>
+            </div>
+            <div class="hero-stats" aria-label="Key metrics">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="500" data-suffix="+">0+</div>
+                    <div class="stat-label">Teams Using</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.9<span style="font-size:16px">%</span></div>
+                    <div class="stat-label">Uptime SLA</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="40" data-suffix="%">0%</div>
+                    <div class="stat-label">Faster Delivery</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ PROBLEM ░░ -->
+<section class="problems" id="problems" aria-labelledby="problems-heading">
+    <div class="container">
+        <div class="section-header fade-up">
+            <div class="section-badge">
+                <i data-lucide="alert-triangle" style="width:13px;height:13px;" aria-hidden="true"></i>
+                The Challenge
+            </div>
+            <h2 id="problems-heading">The Challenge <span class="gradient-text">Teams Face</span></h2>
+            <p>Modern teams struggle with fragmented tools, poor visibility, and disconnected communication that slows everything down.</p>
+        </div>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-icon" aria-hidden="true">
+                    <i data-lucide="shuffle" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Scattered Communication</h3>
+                <p>Teams juggle 5+ tools daily — emails, Slack, spreadsheets, issue trackers — creating information silos and missed updates that cost time and trust.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon" aria-hidden="true">
+                    <i data-lucide="eye-off" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Invisible Progress</h3>
+                <p>No single view of project health means managers are always catching up. Bottlenecks go unnoticed until they become blockers.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon" aria-hidden="true">
+                    <i data-lucide="unlink" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Fragmented Collaboration</h3>
+                <p>Remote teams struggle with async collaboration — feedback loops are slow, context is lost, and alignment breaks down fast.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon" aria-hidden="true">
+                    <i data-lucide="layers" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>No Unified Platform</h3>
+                <p>Paying for multiple disconnected tools is expensive and creates redundancy at every level — teams need one platform that does it all.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ TEAM MEMBERS ░░ -->
+<section class="team" id="team" aria-labelledby="team-heading">
+    <div class="container">
+        <div class="section-header fade-up">
+            <div class="section-badge">
+                <i data-lucide="users-2" style="width:13px;height:13px;" aria-hidden="true"></i>
+                The Team
+            </div>
+            <h2 id="team-heading">Meet the <span class="gradient-text">People Behind Unitum</span></h2>
+            <p>Passionate builders dedicated to transforming how teams work and collaborate.</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-photo-wrap">
+                    <img src="aya.png" alt="Aya" class="team-photo">
+                </div>
+                <h3>Eya Riahi</h3>
+                <p class="team-role">UI/UX Designer</p>
+            </div>
+            <div class="team-card">
+                <div class="team-photo-wrap">
+                    <img src="fatma.png" alt="Fatma" class="team-photo">
+                </div>
+                <h3>Fatma Boubakri</h3>
+                <p class="team-role">Frontend Developer</p>
+            </div>
+            <div class="team-card">
+                <div class="team-photo-wrap">
+                    <img src="minar.png" alt="Minar" class="team-photo">
+                </div>
+                <h3>Minar Hemden</h3>
+                <p class="team-role">Full Stack Developer</p>
+            </div>
+            <div class="team-card">
+                <div class="team-photo-wrap">
+                    <img src="motez.png" alt="Motez" class="team-photo">
+                </div>
+                <h3>Motez Selmi</h3>
+                <p class="team-role">Backend Developer</p>
+            </div>
+            <div class="team-card">
+                <div class="team-photo-wrap">
+                    <img src="nassim.png" alt="Nassim" class="team-photo">
+                </div>
+                <h3>Nassim Maaoui</h3>
+                <p class="team-role">Full Stack Developer</p>
+            </div>
+            <div class="team-card">
+                <div class="team-photo-wrap">
+                    <img src="yosra.png" alt="Yosra" class="team-photo">
+                </div>
+                <h3>Yosra Ben ali</h3>
+                <p class="team-role">Product Manager</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ FEATURES ░░ -->
+<section class="features" id="features" aria-labelledby="features-heading">
+    <div class="container">
+        <div class="section-header fade-up">
+            <div class="section-badge">
+                <i data-lucide="sparkles" style="width:13px;height:13px;" aria-hidden="true"></i>
+                The Solution
+            </div>
+            <h2 id="features-heading">Introducing <span class="gradient-text">Unitum</span> — The Complete Solution</h2>
+            <p>Everything your team needs to plan, execute, and collaborate — beautifully unified in one modern platform.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <i data-lucide="layout-dashboard" style="width:26px;height:26px;"></i>
+                </div>
+                <h3>Smart Project Management</h3>
+                <p>Organize projects with Kanban boards, timeline views, and smart deadline tracking. Visualize everything from sprint to delivery.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <i data-lucide="message-square-dot" style="width:26px;height:26px;"></i>
+                </div>
+                <h3>Real-time Collaboration</h3>
+                <p>Comment, discuss, and collaborate in dedicated project rooms. Every conversation tied to context, not lost in an endless chat feed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <i data-lucide="check-square-2" style="width:26px;height:26px;"></i>
+                </div>
+                <h3>Task Assignment & Tracking</h3>
+                <p>Assign tasks with owners, deadlines, and priority levels. Get real-time progress updates at every level of the project hierarchy.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <i data-lucide="users" style="width:26px;height:26px;"></i>
+                </div>
+                <h3>Team Management</h3>
+                <p>Manage users, employees, and roles from a central dashboard. Fine-grained access control ensures the right people see the right things.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <i data-lucide="bar-chart-3" style="width:26px;height:26px;"></i>
+                </div>
+                <h3>Advanced Analytics</h3>
+                <p>Generate real-time reports on project health, team velocity, and delivery performance. Make data-driven decisions with confidence.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <i data-lucide="shield-check" style="width:26px;height:26px;"></i>
+                </div>
+                <h3>Enterprise-Ready Architecture</h3>
+                <p>Secure, reliable, and designed to scale from 5 to 5,000 team members. Production-grade infrastructure from day one.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ HOW IT WORKS ░░ -->
+<section class="workflow" id="workflow" aria-labelledby="workflow-heading">
+    <div class="container">
+        <div class="section-header section-header--dark fade-up">
+            <div class="section-badge section-badge--light">
+                <i data-lucide="map" style="width:13px;height:13px;" aria-hidden="true"></i>
+                Workflow
+            </div>
+            <h2 id="workflow-heading">Designed for <span class="gradient-text">Simplicity</span></h2>
+            <p>From onboarding to delivery in minutes, not weeks. Six steps to team excellence.</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-num">Step 01</div>
+                <div class="step-icon" aria-hidden="true"><i data-lucide="folder-plus" style="width:22px;height:22px;"></i></div>
+                <h3>Create Projects</h3>
+                <p>Set up your workspace and projects in seconds. Define scope, timeline, and goals right from the start.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">Step 02</div>
+                <div class="step-icon" aria-hidden="true"><i data-lucide="user-plus" style="width:22px;height:22px;"></i></div>
+                <h3>Add Team Members</h3>
+                <p>Invite colleagues and assign roles. Fine-grained permissions ensure everyone sees exactly what they need.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">Step 03</div>
+                <div class="step-icon" aria-hidden="true"><i data-lucide="kanban-square" style="width:22px;height:22px;"></i></div>
+                <h3>Create Tasks & Boards</h3>
+                <p>Organize work with Kanban boards. Drag, drop, and prioritize with an interface that feels effortless.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">Step 04</div>
+                <div class="step-icon" aria-hidden="true"><i data-lucide="messages-square" style="width:22px;height:22px;"></i></div>
+                <h3>Collaborate & Comment</h3>
+                <p>Discuss tasks in dedicated rooms. Real-time collaboration keeps every stakeholder on the same page.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">Step 05</div>
+                <div class="step-icon" aria-hidden="true"><i data-lucide="trending-up" style="width:22px;height:22px;"></i></div>
+                <h3>Track & Report</h3>
+                <p>Monitor progress with live analytics. Spot bottlenecks early and adjust before deadlines slip.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">Step 06</div>
+                <div class="step-icon" aria-hidden="true"><i data-lucide="trophy" style="width:22px;height:22px;"></i></div>
+                <h3>Succeed Together</h3>
+                <p>Achieve goals faster with complete visibility. Celebrate wins, learn from retrospectives, and repeat.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ TECH STACK ░░ -->
+<section class="tech" id="tech" aria-labelledby="tech-heading">
+    <div class="container">
+        <div class="section-header fade-up">
+            <div class="section-badge">
+                <i data-lucide="code-2" style="width:13px;height:13px;" aria-hidden="true"></i>
+                Technology
+            </div>
+            <h2 id="tech-heading">Built on <span class="gradient-text">Modern Technology</span></h2>
+            <p>An enterprise-grade stack chosen for performance, security, and long-term maintainability.</p>
+        </div>
+        <div class="tech-grid fade-up">
+            <div class="tech-col">
+                <div class="tech-col-head">
+                    <div class="tech-col-icon" aria-hidden="true"><i data-lucide="monitor" style="width:20px;height:20px;"></i></div>
+                    <h3>Frontend</h3>
+                </div>
+                <div class="tech-items">
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#61dafb;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">React</div>
+                            <div class="ti-desc">Component-based UI with hooks & context</div>
+                        </div>
+                        <span class="ti-badge">v18+</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#38bdf8;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">TailwindCSS</div>
+                            <div class="ti-desc">Utility-first, zero-runtime styling</div>
+                        </div>
+                        <span class="ti-badge">v3+</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#f97316;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">Redux Toolkit</div>
+                            <div class="ti-desc">Predictable, scalable state management</div>
+                        </div>
+                        <span class="ti-badge">v2+</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#7c3aed;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">React Router</div>
+                            <div class="ti-desc">Declarative client-side routing</div>
+                        </div>
+                        <span class="ti-badge">v6+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tech-col">
+                <div class="tech-col-head">
+                    <div class="tech-col-icon" aria-hidden="true"><i data-lucide="server" style="width:20px;height:20px;"></i></div>
+                    <h3>Backend</h3>
+                </div>
+                <div class="tech-items">
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#009688;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">Python FastAPI</div>
+                            <div class="ti-desc">High-performance async API framework</div>
+                        </div>
+                        <span class="ti-badge">v0.104+</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#336791;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">PostgreSQL</div>
+                            <div class="ti-desc">Relational DB with full ACID compliance</div>
+                        </div>
+                        <span class="ti-badge">v15+</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#d97706;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">JWT Authentication</div>
+                            <div class="ti-desc">Stateless, secure token-based auth</div>
+                        </div>
+                        <span class="ti-badge">RFC 7519</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tdot" style="background:#10b981;"></div>
+                        <div class="ti-text">
+                            <div class="ti-name">RESTful API</div>
+                            <div class="ti-desc">OpenAPI-documented HTTP endpoints</div>
+                        </div>
+                        <span class="ti-badge">OpenAPI 3.1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ ARCHITECTURE ░░ -->
+<section class="architecture" id="architecture" aria-labelledby="arch-heading">
+    <div class="container">
+        <div class="section-header fade-up">
+            <div class="section-badge">
+                <i data-lucide="database" style="width:13px;height:13px;" aria-hidden="true"></i>
+                Architecture
+            </div>
+            <h2 id="arch-heading">Enterprise-Grade <span class="gradient-text">Architecture</span></h2>
+            <p>A clean, modular data model built for extensibility, performance, and real-world production complexity.</p>
+        </div>
+        <div class="arch-grid">
+            <div class="arch-card">
+                <div class="arch-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.13),rgba(124,58,237,.04));color:#7c3aed;" aria-hidden="true">
+                    <i data-lucide="user-circle-2" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>User Management</h3>
+                <p>Comprehensive user and employee entities with role-based access control and hierarchical permission models.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">User</span>
+                    <span class="arch-tag">Employee</span>
+                    <span class="arch-tag">Roles</span>
+                    <span class="arch-tag">Permissions</span>
+                </div>
+            </div>
+            <div class="arch-card">
+                <div class="arch-icon" style="background:linear-gradient(135deg,rgba(37,99,235,.13),rgba(37,99,235,.04));color:#2563eb;" aria-hidden="true">
+                    <i data-lucide="folder-kanban" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Project Management</h3>
+                <p>Projects with full lifecycle support — team assignment, milestones, status tracking, and deadline management.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Project</span>
+                    <span class="arch-tag">Milestone</span>
+                    <span class="arch-tag">Status</span>
+                    <span class="arch-tag">Assignment</span>
+                </div>
+            </div>
+            <div class="arch-card">
+                <div class="arch-icon" style="background:linear-gradient(135deg,rgba(6,182,212,.13),rgba(6,182,212,.04));color:#06b6d4;" aria-hidden="true">
+                    <i data-lucide="list-checks" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Task Engine</h3>
+                <p>Granular tasks with assignees, deadlines, priority levels, dependencies, and board-column positions.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Task</span>
+                    <span class="arch-tag">Priority</span>
+                    <span class="arch-tag">Deadline</span>
+                    <span class="arch-tag">Dependency</span>
+                </div>
+            </div>
+            <div class="arch-card">
+                <div class="arch-icon" style="background:linear-gradient(135deg,rgba(16,185,129,.13),rgba(16,185,129,.04));color:#10b981;" aria-hidden="true">
+                    <i data-lucide="message-circle" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Collaboration Layer</h3>
+                <p>Contextual comments, discussion rooms, and threaded messaging tied directly to tasks and projects.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Comment</span>
+                    <span class="arch-tag">Room</span>
+                    <span class="arch-tag">Thread</span>
+                    <span class="arch-tag">Mentions</span>
+                </div>
+            </div>
+            <div class="arch-card">
+                <div class="arch-icon" style="background:linear-gradient(135deg,rgba(249,115,22,.13),rgba(249,115,22,.04));color:#f97316;" aria-hidden="true">
+                    <i data-lucide="bell-ring" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Notification System</h3>
+                <p>Context-aware alerts for task assignments, deadline reminders, mentions, and project status changes.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Alert</span>
+                    <span class="arch-tag">Email</span>
+                    <span class="arch-tag">In-app</span>
+                    <span class="arch-tag">Preferences</span>
+                </div>
+            </div>
+            <div class="arch-card">
+                <div class="arch-icon" style="background:linear-gradient(135deg,rgba(239,68,68,.13),rgba(239,68,68,.04));color:#ef4444;" aria-hidden="true">
+                    <i data-lucide="pie-chart" style="width:24px;height:24px;"></i>
+                </div>
+                <h3>Analytics & Reporting</h3>
+                <p>Aggregated models for performance reporting, team velocity metrics, delivery forecasting, and KPI dashboards.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Report</span>
+                    <span class="arch-tag">Velocity</span>
+                    <span class="arch-tag">KPI</span>
+                    <span class="arch-tag">Export</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ BENEFITS ░░ -->
+<section class="benefits" id="benefits" aria-labelledby="benefits-heading">
+    <div class="container">
+        <div class="section-header section-header--dark fade-up">
+            <div class="section-badge section-badge--light">
+                <i data-lucide="trophy" style="width:13px;height:13px;" aria-hidden="true"></i>
+                Why Unitum
+            </div>
+            <h2 id="benefits-heading">Why Choose <span class="gradient-text">Unitum?</span></h2>
+            <p>Real impact, measured in results teams experience from day one.</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-metric">30%</div>
+                <h3>Faster Project Delivery</h3>
+                <p>Streamlined workflows and clear ownership reduce delivery time and eliminate costly hand-off delays.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-metric">100%</div>
+                <h3>Team Visibility</h3>
+                <p>Real-time updates keep every stakeholder informed and aligned — no more status-meeting anxiety.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-metric">5×</div>
+                <h3>Tool Consolidation</h3>
+                <p>Replace five disconnected tools with one unified platform. Less context-switching, more shipping.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-metric">∞</div>
+                <h3>Enterprise Scalability</h3>
+                <p>Built to grow with your team — from 5 people to 5,000. Secure, stable, and production-grade.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-metric">2 hrs</div>
+                <h3>Onboarding Time</h3>
+                <p>Intuitive UX means teams are productive from day one. Minimal training required, maximum adoption guaranteed.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-metric">40%</div>
+                <h3>Productivity Increase</h3>
+                <p>Teams consistently report significant productivity gains within the first month through better focus and collaboration.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ USE CASES ░░ -->
+<section class="use-cases" id="use-cases" aria-labelledby="uc-heading">
+    <div class="container">
+        <div class="section-header fade-up">
+            <div class="section-badge">
+                <i data-lucide="building-2" style="width:13px;height:13px;" aria-hidden="true"></i>
+                Use Cases
+            </div>
+            <h2 id="uc-heading">Trusted by Teams <span class="gradient-text">Across Industries</span></h2>
+            <p>Unitum adapts to your team's unique workflow, whatever your industry or team size.</p>
+        </div>
+        <div class="uc-grid">
+            <div class="uc-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#7c3aed,#2563eb);" aria-hidden="true">
+                    <i data-lucide="code-2" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="uc-content">
+                    <h3>Software Development</h3>
+                    <p>Manage sprints, coordinate code reviews, track deployments, and close bugs — all in one place with full team visibility.</p>
+                    <div class="uc-tags">
+                        <span class="uc-tag" style="background:rgba(124,58,237,.1);color:#7c3aed;">Sprints</span>
+                        <span class="uc-tag" style="background:rgba(124,58,237,.1);color:#7c3aed;">CI/CD</span>
+                        <span class="uc-tag" style="background:rgba(124,58,237,.1);color:#7c3aed;">Bug Tracking</span>
+                    </div>
+                </div>
+            </div>
+            <div class="uc-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#f97316,#f59e0b);" aria-hidden="true">
+                    <i data-lucide="megaphone" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="uc-content">
+                    <h3>Marketing Agencies</h3>
+                    <p>Coordinate campaigns across multiple clients, manage content calendars, and collaborate on creative assets without chaos.</p>
+                    <div class="uc-tags">
+                        <span class="uc-tag" style="background:rgba(249,115,22,.1);color:#f97316;">Campaigns</span>
+                        <span class="uc-tag" style="background:rgba(249,115,22,.1);color:#f97316;">Content</span>
+                        <span class="uc-tag" style="background:rgba(249,115,22,.1);color:#f97316;">Client Work</span>
+                    </div>
+                </div>
+            </div>
+            <div class="uc-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#06b6d4,#7c3aed);" aria-hidden="true">
+                    <i data-lucide="lightbulb" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="uc-content">
+                    <h3>Product Teams</h3>
+                    <p>Plan features, manage roadmaps, prioritize backlogs, and ship products customers love — faster and with more confidence.</p>
+                    <div class="uc-tags">
+                        <span class="uc-tag" style="background:rgba(6,182,212,.1);color:#06b6d4;">Roadmap</span>
+                        <span class="uc-tag" style="background:rgba(6,182,212,.1);color:#06b6d4;">Backlog</span>
+                        <span class="uc-tag" style="background:rgba(6,182,212,.1);color:#06b6d4;">Releases</span>
+                    </div>
+                </div>
+            </div>
+            <div class="uc-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#10b981,#06b6d4);" aria-hidden="true">
+                    <i data-lucide="globe-2" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="uc-content">
+                    <h3>Distributed Remote Teams</h3>
+                    <p>Bridge time zones with async-first collaboration. Every update, decision, and discussion captured in one searchable place.</p>
+                    <div class="uc-tags">
+                        <span class="uc-tag" style="background:rgba(16,185,129,.1);color:#10b981;">Async</span>
+                        <span class="uc-tag" style="background:rgba(16,185,129,.1);color:#10b981;">Remote</span>
+                        <span class="uc-tag" style="background:rgba(16,185,129,.1);color:#10b981;">Global</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ CTA ░░ -->
+<section class="cta" id="cta" aria-labelledby="cta-heading">
+    <div class="cta-glow" aria-hidden="true"></div>
+    <div class="container">
+        <div class="cta-content">
+            <div class="section-badge section-badge--light">
+                <i data-lucide="zap" style="width:13px;height:13px;" aria-hidden="true"></i>
+                Ready to Launch?
+            </div>
+            <h2 id="cta-heading">Ready to <span class="gradient-text">Transform Your Team?</span></h2>
+            <p>Join forward-thinking teams already using Unitum to ship faster, collaborate smarter, and grow stronger.</p>
+            <div class="cta-actions">
+                <a href="#" class="btn btn-primary btn-xl">
+                    <i data-lucide="rocket" style="width:19px;height:19px;" aria-hidden="true"></i>
+                    Get Started
+                </a>
+                <a href="#" class="btn btn-ghost btn-xl">
+                    <i data-lucide="calendar" style="width:19px;height:19px;" aria-hidden="true"></i>
+                    Schedule Demo
+                </a>
+                <a href="#features" class="btn btn-ghost btn-xl">
+                    <i data-lucide="info" style="width:19px;height:19px;" aria-hidden="true"></i>
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="footer" role="contentinfo">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo" aria-label="Unitum home">
+                    <div class="logo-mark" aria-hidden="true">U</div>
+                    <span class="logo-text">Unitum</span>
+                </a>
+                <p>The all-in-one collaborative project management platform for modern teams. Build, ship, and succeed — together.</p>
+                <div class="footer-socials">
+                    <a href="#" class="soc-link" aria-label="LinkedIn">
+                        <i data-lucide="linkedin" style="width:15px;height:15px;" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="soc-link" aria-label="Twitter/X">
+                        <i data-lucide="twitter" style="width:15px;height:15px;" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="soc-link" aria-label="GitHub">
+                        <i data-lucide="github" style="width:15px;height:15px;" aria-hidden="true"></i>
+                    </a>
+                    <a href="mailto:contact@unitum.app" class="soc-link" aria-label="Email us">
+                        <i data-lucide="mail" style="width:15px;height:15px;" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul class="footer-links" role="list">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#workflow">How It Works</a></li>
+                    <li><a href="#tech">Technology</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul class="footer-links" role="list">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul class="footer-links" role="list">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Status Page</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Unitum. All rights reserved. Built with dedication by the Unitum Team.</p>
+            <p>Making teams unstoppable, one project at a time.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ── Initialize Lucide icons ──────────────────────────
+    lucide.createIcons();
+
+    // ── Navbar scroll effect ─────────────────────────────
+    const navbar = document.getElementById('navbar');
+    const onScroll = () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ── Mobile nav ───────────────────────────────────────
+    function openMobileNav() {
+        document.getElementById('mobileNav').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+        document.getElementById('mobileNav').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // ── Intersection Observer — scroll animations ────────
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll(
+        '.fade-up, .problem-card, .feature-card, .step-card, ' +
+        '.arch-card, .benefit-card, .uc-card, .team-card'
+    ).forEach(el => observer.observe(el));
+
+    // ── Counter animation ────────────────────────────────
+    const counterEls = document.querySelectorAll('[data-target]');
+    let countersStarted = false;
+
+    function startCounters() {
+        if (countersStarted) return;
+        countersStarted = true;
+        counterEls.forEach(el => {
+            const target = parseInt(el.dataset.target, 10);
+            const suffix = el.dataset.suffix || '';
+            let current = 0;
+            const duration = 1800;
+            const step = target / (duration / 16);
+            const timer = setInterval(() => {
+                current = Math.min(current + step, target);
+                el.textContent = Math.floor(current) + suffix;
+                if (current >= target) clearInterval(timer);
+            }, 16);
+        });
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) startCounters();
+    }, { threshold: 0.5 });
+
+    const heroStats = document.querySelector('.hero-stats');
+    if (heroStats) statsObserver.observe(heroStats);
+
+    // ── Smooth anchor scrolling ──────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id === '#') return;
+            const target = document.querySelector(id);
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({ top: target.getBoundingClientRect().top + scrollY - 76, behavior: 'smooth' });
+            }
+        });
+    });
+
+    // ── Keyboard nav for hamburger ───────────────────────
+    document.querySelector('.hamburger').addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') openMobileNav();
+    });
+</script>
+</body>
+</html>
