@@ -562,101 +562,150 @@
         .footer-bottom p { font-size: 12.5px; color: rgba(255,255,255,.25); }
 
         /* ── PLANS ───────────────────────────────────────── */
-        .plans { background: white; }
+        .plans { background: var(--gray-50); }
+
+        .plans-tabs {
+            display: flex; justify-content: center; gap: 8px;
+            margin-bottom: 20px;
+        }
+        .plans-tab {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 24px; border-radius: 100px;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer; border: 1px solid var(--gray-200);
+            background: white; color: var(--gray-500);
+            transition: all .2s;
+        }
+        .plans-tab.active {
+            background: white; color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .plans-billing {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 52px;
+        }
+        .billing-toggle {
+            display: flex; align-items: center;
+            background: white; border: 1px solid var(--gray-200);
+            border-radius: 100px; overflow: hidden;
+        }
+        .billing-opt {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 20px; font-size: 13px; font-weight: 600;
+            cursor: pointer; color: var(--gray-500); transition: all .2s;
+        }
+        .billing-opt.active { background: white; color: var(--dark); }
+        .billing-opt .check-icon { color: var(--primary); }
+        .billing-save {
+            background: var(--primary); color: white;
+            font-size: 11px; font-weight: 700;
+            padding: 4px 12px; border-radius: 100px;
+        }
 
         .plans-grid {
             display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 28px;
+            grid-template-columns: repeat(4,1fr);
+            gap: 20px;
             align-items: start;
         }
 
         .plan-card {
+            background: white;
             border-radius: var(--r-xl);
-            padding: 40px 32px;
+            padding: 32px 28px;
             border: 1px solid var(--gray-200);
             position: relative;
             transition: transform .35s ease, box-shadow .35s ease, opacity .6s ease;
             opacity: 0; transform: translateY(32px);
         }
         .plan-card.visible { opacity: 1; transform: translateY(0); }
-        .plan-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-2xl); }
-
-        .plan-card--popular {
-            background: var(--dark);
-            border-color: var(--primary);
-            box-shadow: 0 0 0 1px var(--primary), var(--shadow-2xl);
-        }
+        .plan-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); }
 
         .plan-badge {
-            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
             background: var(--gradient);
-            color: white; font-size: 11px; font-weight: 700;
-            padding: 4px 16px; border-radius: 100px;
-            letter-spacing: .6px; text-transform: uppercase;
+            color: white; font-size: 12px; font-weight: 700;
+            padding: 5px 18px; border-radius: 100px;
             white-space: nowrap;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .plan-icon {
+            width: 48px; height: 48px;
+            background: rgba(124,58,237,.08);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary); margin-bottom: 14px;
         }
 
         .plan-name {
-            font-size: 13px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-            color: var(--primary); margin-bottom: 12px;
+            font-size: 18px; font-weight: 800;
+            color: var(--dark); margin-bottom: 4px;
         }
-        .plan-card--popular .plan-name { color: var(--primary-light); }
+        .plan-tagline {
+            font-size: 13px; color: var(--gray-400); margin-bottom: 16px;
+        }
 
         .plan-price {
             font-size: 48px; font-weight: 900;
-            line-height: 1; margin-bottom: 4px;
-            color: var(--dark);
+            line-height: 1; color: var(--dark);
+            display: flex; align-items: baseline; gap: 4px;
+            margin-bottom: 20px;
         }
-        .plan-card--popular .plan-price { color: white; }
-        .plan-price span { font-size: 18px; font-weight: 500; vertical-align: super; }
+        .plan-price .plan-currency { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+        .plan-price .plan-unit { font-size: 14px; font-weight: 500; color: var(--gray-400); }
+        .plan-price--custom { font-size: 32px; }
 
-        .plan-period {
-            font-size: 13px; color: var(--gray-400);
+        .plan-features {
+            list-style: none;
+            display: flex; flex-direction: column; gap: 10px;
             margin-bottom: 28px;
         }
-
-        .plan-divider {
-            border: none; border-top: 1px solid var(--gray-200);
-            margin-bottom: 24px;
-        }
-        .plan-card--popular .plan-divider { border-color: rgba(255,255,255,.1); }
-
-        .plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
         .plan-features li {
             display: flex; align-items: center; gap: 10px;
             font-size: 13.5px; color: var(--gray-700);
         }
-        .plan-card--popular .plan-features li { color: rgba(255,255,255,.75); }
-        .plan-features li::before {
-            content: ''; width: 16px; height: 16px; flex-shrink: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
+        .plan-features li .fi {
+            width: 20px; height: 20px; flex-shrink: 0;
+            background: #22c55e; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
         }
 
         .plan-btn {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 14px;
-            border-radius: 12px; font-size: 15px; font-weight: 700;
-            text-decoration: none; transition: all .2s;
+            width: 100%; padding: 13px;
+            border-radius: 100px; font-size: 14px; font-weight: 700;
+            text-decoration: none; transition: all .2s; cursor: pointer;
         }
+        .plan-btn--filled {
+            background: var(--gradient); color: white;
+            border: none;
+            box-shadow: 0 4px 14px rgba(124,58,237,.35);
+        }
+        .plan-btn--filled:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,.5); }
         .plan-btn--outline {
+            background: transparent; color: var(--primary);
             border: 2px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
         }
         .plan-btn--outline:hover { background: var(--primary); color: white; }
-        .plan-btn--filled {
-            background: var(--gradient);
-            color: white;
-            border: 2px solid transparent;
-            box-shadow: 0 4px 14px rgba(124,58,237,.4);
+
+        .plans-compare {
+            text-align: center; margin-top: 40px;
         }
-        .plan-btn--filled:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,.55); }
+        .plans-compare a {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--primary); font-size: 14px; font-weight: 600;
+            text-decoration: none; transition: gap .2s;
+        }
+        .plans-compare a:hover { gap: 12px; }
 
         .plan-card:nth-child(1) { transition-delay:.00s }
-        .plan-card:nth-child(2) { transition-delay:.10s }
-        .plan-card:nth-child(3) { transition-delay:.20s }
+        .plan-card:nth-child(2) { transition-delay:.08s }
+        .plan-card:nth-child(3) { transition-delay:.16s }
+        .plan-card:nth-child(4) { transition-delay:.24s }
 
         /* ── TEAM ────────────────────────────────────────── */
         .team { background: var(--gray-50); }
@@ -755,7 +804,7 @@
             .arch-grid     { grid-template-columns: repeat(2,1fr); }
             .benefits-grid { grid-template-columns: repeat(2,1fr); }
             .team-grid     { grid-template-columns: repeat(3,1fr); }
-            .plans-grid    { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+            .plans-grid    { grid-template-columns: repeat(2,1fr); }
             .footer-grid   { grid-template-columns: 1fr 1fr; }
         }
 
@@ -1410,59 +1459,128 @@
             <h2 id="plans-heading">Simple, <span class="gradient-text">Transparent Pricing</span></h2>
             <p>Choose the plan that fits your team. No hidden fees, no surprises.</p>
         </div>
+
+        <!-- Tab toggle -->
+        <div class="plans-tabs fade-up">
+            <div class="plans-tab active">
+                <i data-lucide="building-2" style="width:15px;height:15px;"></i>
+                Enterprise
+            </div>
+            <div class="plans-tab">
+                <i data-lucide="graduation-cap" style="width:15px;height:15px;"></i>
+                Academic
+            </div>
+        </div>
+
+        <!-- Billing toggle -->
+        <div class="plans-billing fade-up">
+            <div class="billing-toggle">
+                <div class="billing-opt active">
+                    <i data-lucide="check" style="width:13px;height:13px;" class="check-icon"></i>
+                    Monthly
+                </div>
+                <div class="billing-opt">
+                    Annual
+                    <span class="billing-save">Save 20%</span>
+                </div>
+            </div>
+        </div>
+
         <div class="plans-grid">
 
             <!-- Starter -->
             <div class="plan-card">
+                <div class="plan-icon">
+                    <i data-lucide="rocket" style="width:22px;height:22px;"></i>
+                </div>
                 <div class="plan-name">Starter</div>
-                <div class="plan-price"><span>$</span>0</div>
-                <div class="plan-period">Free forever</div>
-                <hr class="plan-divider">
+                <div class="plan-tagline">Perfect for small teams</div>
+                <div class="plan-price">
+                    <span class="plan-currency"></span>49<span class="plan-unit">DT/mo</span>
+                </div>
                 <ul class="plan-features">
-                    <li>Up to 3 projects</li>
-                    <li>5 team members</li>
-                    <li>Basic Kanban boards</li>
-                    <li>Task assignment & tracking</li>
-                    <li>Community support</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>10 team members</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>3 workspaces</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>5 active projects</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>10 GB storage</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>Basic ML insights</li>
                 </ul>
-                <a href="asdasd" class="plan-btn plan-btn--outline">Get Started</a>
+                <a href="asdasd" class="plan-btn plan-btn--filled">Get Started <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
             </div>
 
-            <!-- Pro (popular) -->
-            <div class="plan-card plan-card--popular">
-                <div class="plan-badge">Most Popular</div>
+            <!-- Pro (recommended) -->
+            <div class="plan-card">
+                <div class="plan-badge">
+                    <i data-lucide="star" style="width:12px;height:12px;"></i>
+                    Recommended
+                </div>
+                <div class="plan-icon">
+                    <i data-lucide="award" style="width:22px;height:22px;"></i>
+                </div>
                 <div class="plan-name">Pro</div>
-                <div class="plan-price"><span>$</span>12</div>
-                <div class="plan-period">per member / month</div>
-                <hr class="plan-divider">
+                <div class="plan-tagline">For growing organizations</div>
+                <div class="plan-price">
+                    <span class="plan-currency"></span>149<span class="plan-unit">DT/mo</span>
+                </div>
                 <ul class="plan-features">
-                    <li>Unlimited projects</li>
-                    <li>Unlimited team members</li>
-                    <li>Advanced analytics & reports</li>
-                    <li>Real-time collaboration rooms</li>
-                    <li>Priority email support</li>
-                    <li>Custom roles & permissions</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>25 team members</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>10 workspaces</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>20 active projects</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>50 GB storage</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>Full ML suite (churn, risk)</li>
                 </ul>
-                <a href="asdasd" class="plan-btn plan-btn--filled">Get Started</a>
+                <a href="asdasd" class="plan-btn plan-btn--filled">Get Started <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
+            </div>
+
+            <!-- Business -->
+            <div class="plan-card">
+                <div class="plan-icon">
+                    <i data-lucide="building-2" style="width:22px;height:22px;"></i>
+                </div>
+                <div class="plan-name">Business</div>
+                <div class="plan-tagline">For large enterprises</div>
+                <div class="plan-price">
+                    <span class="plan-currency"></span>349<span class="plan-unit">DT/mo</span>
+                </div>
+                <ul class="plan-features">
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>512 GB storage</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>Full ML suite (churn, risk)</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>Dedicated CSM</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>API access</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>SSO / SAML</li>
+                </ul>
+                <a href="asdasd" class="plan-btn plan-btn--filled">Get Started <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
             </div>
 
             <!-- Enterprise -->
             <div class="plan-card">
+                <div class="plan-icon">
+                    <i data-lucide="landmark" style="width:22px;height:22px;"></i>
+                </div>
                 <div class="plan-name">Enterprise</div>
-                <div class="plan-price"><span></span>Custom</div>
-                <div class="plan-period">Contact us for pricing</div>
-                <hr class="plan-divider">
+                <div class="plan-tagline">Custom scale &amp; compliance</div>
+                <div class="plan-price plan-price--custom">On Request<span class="plan-unit" style="font-size:12px;margin-left:4px;">Custom pricing</span></div>
                 <ul class="plan-features">
-                    <li>Everything in Pro</li>
-                    <li>SSO & SAML authentication</li>
-                    <li>Dedicated account manager</li>
-                    <li>SLA guarantee & uptime</li>
-                    <li>On-premise deployment option</li>
-                    <li>Custom integrations & API</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>10240 GB storage</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>Full ML suite (churn, risk)</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>Dedicated CSM</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>API access</li>
+                    <li><span class="fi"><i data-lucide="check" style="width:11px;height:11px;"></i></span>SSO / SAML</li>
                 </ul>
-                <a href="asdasd" class="plan-btn plan-btn--outline">Get Started</a>
+                <a href="asdasd" class="plan-btn plan-btn--outline">
+                    <i data-lucide="mail" style="width:15px;height:15px;"></i>
+                    Contact Sales
+                </a>
             </div>
 
+        </div>
+
+        <div class="plans-compare fade-up">
+            <a href="#">
+                <i data-lucide="layout-list" style="width:15px;height:15px;"></i>
+                Compare all plans
+                <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+            </a>
         </div>
     </div>
 </section>
